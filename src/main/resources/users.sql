@@ -1,0 +1,1 @@
+INSERT INTO mail.users (user_id, username, password, email, name, last_name, active) VALUES (1, 'admin', '$2a$11$uSXS6rLJ91WjgOHhEGDx..VGs7MkKZV68Lv5r1uwFu7HgtRn3dcXG', '', '', '', 1);

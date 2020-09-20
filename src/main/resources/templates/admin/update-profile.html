@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang ="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Изменить профиль</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container my-5">
+    <h3> Изменить профиль</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-8">
+                <form action="#" th:action="@{/admin/update/{id}(id=${profile.id})}" th:object="${profile}" method="post">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="profileName" class="col-form-label">Название</label>
+                            <input type="text" th:field="*{profileName}" class="form-control" id="profileName" placeholder="Название">
+                            <span th:if="${#fields.hasErrors('profileName')}" th:errors="*{profileName}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="mailboxSize" class="col-form-label">Размер (мб)</label>
+                            <input type="text" th:field="*{mailboxSize}" class="form-control" id="mailboxSize" placeholder="Размер">
+                            <span th:if="${#fields.hasErrors('mailboxSize')}" th:errors="*{mailboxSize}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <input type="submit" class="btn btn-primary" value="Изменить профиль">
+                        </div>
+                        <a href="/admin/list-profiles" class="btn btn-primary"> Назад </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

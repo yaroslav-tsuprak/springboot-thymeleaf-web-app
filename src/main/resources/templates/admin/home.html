@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Admin Page</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="card">
+
+    <form th:action="@{/logout}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="registration"
+                type="Submit">Logout
+        </button>
+    </form>
+
+    <div class="card" style="margin-top:20px">
+        <div class="card-header" th:align="center">
+            <span th:utext="${userName}"></span>
+        </div>
+    </div>
+
+    <div class="card" th:align="center">
+            <div class="card-body">
+                <p class="card-text">
+                    <a href="/admin/list" class="btn btn-primary"><i class="fas fa-user-plus ml-2">Список ящиков</i></a>
+                    <a href="/admin/list-profiles" class="btn btn-primary"><i class="fas fa-user-plus ml-2">Список профилей</i></a>
+                </p>
+            </div>
+            <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
+    </div>
+</div>
+</body>
+</html>

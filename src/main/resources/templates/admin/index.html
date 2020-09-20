@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Mailbox Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="card">
+
+    <form th:action="@{/logout}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="registration"
+                type="Submit">Logout
+        </button>
+    </form>
+
+    <div class="card">
+        <div class="card-body" th:align="center">
+            <div th:switch="${mailboxes}" class="card">
+                <p class="card-text">
+                    <a href="/admin/home" class="btn btn-primary"><i class="fas fa-home ml-2"> Домой</i></a>
+                    <a href="/admin/showForm" class="btn btn-primary"><i class="fas fa-user-plus ml-2"> Добавить ящик</i></a>
+                </p>
+<!--                <div class="col-md-10" th:align="center">-->
+                    <h2 th:case="null">Нет не одного ящика!</h2>
+                    <div th:case="*" th:align="center">
+                        <table class="table table-striped table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>Имя / Логин</th>
+                                <th>Пароль</th>
+                                <th>Имя</th>
+                                <th>Фамилия</th>
+                                <th>Отчество</th>
+                                <th>Профиль</th>
+                                <th>Статус</th>
+                                <th>Edit</th>
+                                <th>Disable</th>
+                                <th>Delete</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="email : ${mailboxes}">
+                                <td th:text="${email.login}"></td>
+                                <td th:text="${email.password}"></td>
+                                <td th:text="${email.firstName}"></td>
+                                <td th:text="${email.lastName}"></td>
+                                <td th:text="${email.patronymic}"></td>
+                                <td th:text="${email.getProfileName()}"></td>
+                                <td th:text="${email.active} ? 'ON' : 'OFF'"></td>
+                                <td><a th:href="@{/admin/edit/{id}(id=${email.id})}" class="btn btn-primary"><i class="fas fa-user-edit"></i></a></td>
+                                <td><a th:href="@{/admin/changestate/{id}(id=${email.id})}" class="btn btn-primary"><i class='fas fa-user-lock'></i></a></td>
+                                <td><a th:href="@{/admin/delete/{id}(id=${email.id})}" class="btn btn-primary"><i class="fas fa-user-slash"></i></a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

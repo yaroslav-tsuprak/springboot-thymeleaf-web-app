@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang ="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Обновить ящик</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container my-5">
+    <h3> Обновить ящик</h3>
+    <div class="card">
+        <div class="card-body">
+            <div class="col-md-8">
+                <form action="#" th:action="@{/admin/update/{id}(id=${mailbox.id})}" th:object="${mailbox}" method="post">
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="login" class="col-form-label">Имя / Логин</label>
+                            <input type="text" th:field="*{login}" class="form-control" id="login" placeholder="Имя / Логин">
+                            <span th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="password" class="col-form-label">Пароль</label>
+                            <input type="text" th:field="*{password}" class="form-control" id="password" placeholder="Пароль">
+                            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="firstName" class="col-form-label">Имя</label>
+                            <input type="text" th:field="*{firstName}" class="form-control" id="firstName" placeholder="Имя">
+                            <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="lastName" class="col-form-label">Фамилия</label>
+                            <input type="text" th:field="*{lastName}" class="form-control" id="lastName" placeholder="Фамилия">
+                            <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="patronymic" class="col-form-label">Отчество</label>
+                            <input type="text" th:field="*{patronymic}" class="form-control" id="patronymic" placeholder="Отчество">
+                            <span th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-8" th:object="${profiles}">
+                            <label for="profile" class="col-form-label">Профиль</label>
+                            <select class="form-control" th:field="${mailbox.profileId}">
+                                <option th:value="${mailbox.profileId}" th:text="${mailbox.profileName}"></option>
+                                <option th:each="profile : ${profiles}"
+                                        th:value="${profile.id}"
+                                        th:text="${profile.profileName}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <input type="submit" class="btn btn-primary" value="Обновить ящик">
+                            <a href="/admin/list" class="btn btn-primary"> Назад </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

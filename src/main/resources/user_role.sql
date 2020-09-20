@@ -1,0 +1,1 @@
+INSERT INTO mail.user_role (user_id, role_id) VALUES (1, 2);
