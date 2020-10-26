@@ -5,6 +5,7 @@ import com.springboot.java.entity.Profile;
 import com.springboot.java.repository.MailboxRepository;
 import com.springboot.java.repository.ProfileRepository;
 import com.springboot.java.service.UserService;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,7 @@ public class MailboxController {
 
     @GetMapping("/admin/showForm")
     public String mailForm(Mailbox mailbox) {
+        mailbox.setPassword(generateRandomSpecialCharacters(8));
         return "admin/add-mailbox";
     }
 
@@ -107,5 +109,11 @@ public class MailboxController {
         this.mailboxRepository.save(mailbox);
         model.addAttribute("mailboxes", this.mailboxRepository.findAll());
         return "redirect:admin/list";
+    }
+
+    public String generateRandomSpecialCharacters(int length) {
+        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(33, 45)
+                .build();
+        return pwdGenerator.generate(length);
     }
 }
