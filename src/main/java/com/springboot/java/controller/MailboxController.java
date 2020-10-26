@@ -2,26 +2,20 @@ package com.springboot.java.controller;
 
 import com.springboot.java.entity.Mailbox;
 import com.springboot.java.entity.Profile;
-import com.springboot.java.entity.User;
 import com.springboot.java.repository.MailboxRepository;
 import com.springboot.java.repository.ProfileRepository;
 import com.springboot.java.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 public class MailboxController {
@@ -37,7 +31,7 @@ public class MailboxController {
 
     @GetMapping("/admin/showForm")
     public String mailForm(Mailbox mailbox) {
-        return "/admin/add-mailbox";
+        return "admin/add-mailbox";
     }
 
     @GetMapping("/admin/edit/{id}")
@@ -52,7 +46,7 @@ public class MailboxController {
         });
         model.addAttribute("profiles", profiles);
         model.addAttribute("mailbox", mailbox);
-        return "/admin/update-mailbox";
+        return "admin/update-mailbox";
     }
 
     @GetMapping("/admin/list")
@@ -64,17 +58,17 @@ public class MailboxController {
         Iterable<Mailbox> mailboxes = mailboxRepository.findAll();
         mailboxes.forEach((Mailbox m) -> m.setProfileName(profiles.get(m.getProfileId()).getProfileName()));
         model.addAttribute("mailboxes", mailboxes);
-        return "/admin/index";
+        return "admin/index";
     }
 
     @PostMapping("admin/add")
     public String addMail(@Valid Mailbox mailbox, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "/admin/add-mailbox";
+            return "admin/add-mailbox";
         }
 
         this.mailboxRepository.save(mailbox);
-        return "redirect:/admin/list";
+        return "redirect:admin/list";
     }
 
     @GetMapping("/admin/delete/{id}")
@@ -84,7 +78,7 @@ public class MailboxController {
 
         this.mailboxRepository.delete(mailbox);
         model.addAttribute("mailbox", this.mailboxRepository.findAll());
-        return "/admin/index";
+        return "admin/index";
     }
 
     @GetMapping("/admin/changestate/{id}")
@@ -101,17 +95,17 @@ public class MailboxController {
         }
         this.mailboxRepository.save(mailbox);
         model.addAttribute("mailboxes", this.mailboxRepository.findAll());
-        return "/admin/index";
+        return "admin/index";
     }
 
     @PostMapping("admin/update/{id}")
     public String updateMailbox(@PathVariable("id") int id, @Valid Mailbox mailbox, BindingResult result, Model model) {
         if (result.hasErrors()) {
             mailbox.setId(id);
-            return "/admin/update-mailbox";
+            return "admin/update-mailbox";
         }
         this.mailboxRepository.save(mailbox);
         model.addAttribute("mailboxes", this.mailboxRepository.findAll());
-        return "redirect:/admin/list";
+        return "redirect:admin/list";
     }
 }

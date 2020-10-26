@@ -29,21 +29,21 @@ public class ProfileController {
     @GetMapping("/admin/list-profiles")
     public String showProfiles(Model model) {
         model.addAttribute("profiles", this.profileRepository.findAll());
-        return "/admin/profiles";
+        return "admin/profiles";
     }
 
     @GetMapping("/admin/profile/showFormAdd")
     public String profileForm(Profile profile) {
-        return "/admin/add-profile";
+        return "admin/add-profile";
     }
 
     @PostMapping("/admin/profile/add")
     public String addProfile(@Valid Profile profile, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "/admin/add-profile";
+            return "admin/add-profile";
         }
         this.profileRepository.save(profile);
-        return "redirect:/admin/list-profiles";
+        return "redirect:admin/list-profiles";
     }
 
     @GetMapping("/admin/profile/edit/{id}")
@@ -51,6 +51,6 @@ public class ProfileController {
         Profile profile = this.profileRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid profile id: " + id));
         model.addAttribute("profile", profile);
-        return "/admin/update-profile";
+        return "admin/update-profile";
     }
 }
