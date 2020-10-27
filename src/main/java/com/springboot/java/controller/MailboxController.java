@@ -23,11 +23,11 @@ import java.util.Map;
 @Controller
 public class MailboxController {
 
-    private static String SSH_USERNAME = "mailadmin";
-    private static String SSH_PASSWORD = "1qa2ws3ed";
+    private static String SSH_USERNAME = "user";
+    private static String SSH_PASSWORD = "password";
     private static String SSH_HOST = "192.168.192.4";
     private static int SSH_PORT = 22;
-    private static String SSH_COMMAND = "touch /tmp/WORKED.TXT";
+    private static String SSH_COMMAND = "/opt/alias/recreate.sh";
 
     @Autowired
     private UserService userService;
