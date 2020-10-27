@@ -5,6 +5,7 @@ import com.springboot.java.entity.Profile;
 import com.springboot.java.repository.MailboxRepository;
 import com.springboot.java.repository.ProfileRepository;
 import com.springboot.java.service.UserService;
+import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -112,7 +113,9 @@ public class MailboxController {
     }
 
     public String generateRandomSpecialCharacters(int length) {
-        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder().withinRange(33, 45)
+        RandomStringGenerator pwdGenerator = new RandomStringGenerator.Builder()
+                .withinRange('0', 'z')
+                .filteredBy(CharacterPredicates.DIGITS, CharacterPredicates.LETTERS)
                 .build();
         return pwdGenerator.generate(length);
     }
