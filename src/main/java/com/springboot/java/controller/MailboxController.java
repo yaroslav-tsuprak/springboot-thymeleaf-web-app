@@ -4,6 +4,7 @@ import com.springboot.java.entity.Mailbox;
 import com.springboot.java.entity.Profile;
 import com.springboot.java.repository.MailboxRepository;
 import com.springboot.java.repository.ProfileRepository;
+import com.springboot.java.service.SshService;
 import com.springboot.java.service.UserService;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -21,6 +22,12 @@ import java.util.Map;
 
 @Controller
 public class MailboxController {
+
+    private static String SSH_USERNAME = "user";
+    private static String SSH_PASSWORD = "password";
+    private static String SSH_HOST = "192.168.192.4";
+    private static int SSH_PORT = 22;
+    private static String SSH_COMMAND = "/opt/alias/recreate.sh";
 
     @Autowired
     private UserService userService;
@@ -65,27 +72,29 @@ public class MailboxController {
     }
 
     @PostMapping("admin/add")
-    public String addMail(@Valid Mailbox mailbox, BindingResult result, Model model) {
+    public String addMail(@Valid Mailbox mailbox, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
             return "admin/add-mailbox";
         }
 
         this.mailboxRepository.save(mailbox);
+        SshService.execCommandOverSsh(SSH_USERNAME, SSH_PASSWORD, SSH_HOST, SSH_PORT, SSH_COMMAND);
         return "redirect:admin/list";
     }
 
     @GetMapping("/admin/delete/{id}")
-    public String deleteMailbox(@PathVariable("id") int id, Model model) {
+    public String deleteMailbox(@PathVariable("id") int id, Model model) throws Exception {
         Mailbox mailbox = this.mailboxRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid mailbox id: " + id));
 
         this.mailboxRepository.delete(mailbox);
+        SshService.execCommandOverSsh(SSH_USERNAME, SSH_PASSWORD, SSH_HOST, SSH_PORT, SSH_COMMAND);
         model.addAttribute("mailbox", this.mailboxRepository.findAll());
         return "admin/index";
     }
 
     @GetMapping("/admin/changestate/{id}")
-    public String blockMailbox(@PathVariable("id") int id, Model model) {
+    public String blockMailbox(@PathVariable("id") int id, Model model) throws Exception {
         Mailbox mailbox = this.mailboxRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid mailbox id: " + id));
         if(mailbox.isActive())
@@ -97,17 +106,19 @@ public class MailboxController {
             mailbox.setActive(true);
         }
         this.mailboxRepository.save(mailbox);
+        SshService.execCommandOverSsh(SSH_USERNAME, SSH_PASSWORD, SSH_HOST, SSH_PORT, SSH_COMMAND);
         model.addAttribute("mailboxes", this.mailboxRepository.findAll());
         return "admin/index";
     }
 
     @PostMapping("admin/update/{id}")
-    public String updateMailbox(@PathVariable("id") int id, @Valid Mailbox mailbox, BindingResult result, Model model) {
+    public String updateMailbox(@PathVariable("id") int id, @Valid Mailbox mailbox, BindingResult result, Model model) throws Exception {
         if (result.hasErrors()) {
             mailbox.setId(id);
             return "admin/update-mailbox";
         }
         this.mailboxRepository.save(mailbox);
+        SshService.execCommandOverSsh(SSH_USERNAME, SSH_PASSWORD, SSH_HOST, SSH_PORT, SSH_COMMAND);
         model.addAttribute("mailboxes", this.mailboxRepository.findAll());
         return "redirect:admin/list";
     }
